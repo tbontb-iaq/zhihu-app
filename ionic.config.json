@@ -1,7 +1,7 @@
 {
-  "name": "zhihu-app",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "vue-vite"
+	"name": "zhihu-app",
+	"integrations": {
+		"capacitor": {}
+	},
+	"type": "vue-vite"
 }

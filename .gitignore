@@ -30,3 +30,7 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+
+components.d.ts
+auto-imports.d.ts
+.eslintrc-auto-import.json
