@@ -23,6 +23,7 @@ module.exports = {
 		'vue/no-deprecated-slot-attribute': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
 
+		'no-extra-semi': 'off',
 		'vue/html-quotes': 'off',
 		'vue/multi-word-component-names': 'off',
 		'vue/max-attributes-per-line': [

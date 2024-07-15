@@ -23,6 +23,8 @@ watch(tab, () => {
 </script>
 
 <style scoped lang="scss">
+@import '@/assets/styles/colors';
+
 .tabs-index {
 	> .v-layout {
 		> .v-bottom-navigation {
@@ -30,6 +32,12 @@ watch(tab, () => {
 
 			> .v-bottom-navigation__content {
 				> .v-btn {
+					transition: all 0.1s ease;
+
+					&.v-btn--selected {
+						color: $blue-500;
+					}
+
 					> :deep(.v-btn__overlay) {
 						background: transparent;
 					}
