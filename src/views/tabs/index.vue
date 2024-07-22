@@ -1,12 +1,12 @@
 <template lang="pug">
 ion-page.tabs-index
-	ion-router-outlet
+  ion-router-outlet
 
-	v-layout
-		v-bottom-navigation(v-model='tab', mode='shift', grow, mandatory)
-			v-btn(v-for='t of tabs', :key='t.path')
-				v-icon(:icon='t.name === route.name ? t.iconFilled : t.icon')
-				span {{ t.name }}
+  v-layout
+    v-bottom-navigation(v-model='tab', mode='shift', grow, mandatory)
+      v-btn(v-for='t of tabs', :key='t.path')
+        v-icon(:icon='t.name === route.name ? t.iconFilled : t.icon')
+        span {{ t.name }}
 </template>
 
 <script setup lang="ts">
@@ -14,11 +14,11 @@ import tabs from './tabs'
 import { useIonRouter } from '@ionic/vue'
 
 const route = useRoute(),
-	router = useIonRouter(),
-	tab = ref(0)
+  router = useIonRouter(),
+  tab = ref(0)
 
 watch(tab, () => {
-	router.replace(tabs[tab.value].path)
+  router.replace(tabs[tab.value].path)
 })
 </script>
 
@@ -26,29 +26,29 @@ watch(tab, () => {
 @import '@/assets/styles/colors';
 
 .tabs-index {
-	> .v-layout {
-		> .v-bottom-navigation {
-			box-shadow: 0 0 5px black;
+  > .v-layout {
+    > .v-bottom-navigation {
+      box-shadow: 0 0 5px black;
 
-			> .v-bottom-navigation__content {
-				> .v-btn {
-					transition: all 0.1s ease;
+      > .v-bottom-navigation__content {
+        > .v-btn {
+          transition: all 0.1s ease;
 
-					&.v-btn--selected {
-						color: $blue-500;
-					}
+          &.v-btn--selected {
+            color: $blue-500;
+          }
 
-					> :deep(.v-btn__overlay) {
-						background: transparent;
-					}
-					> .v-btn__content {
-						> .v-icon {
-							font-size: 30px;
-						}
-					}
-				}
-			}
-		}
-	}
+          > :deep(.v-btn__overlay) {
+            background: transparent;
+          }
+          > .v-btn__content {
+            > .v-icon {
+              font-size: 30px;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 </style>

@@ -10,31 +10,31 @@ import { FunctionalComponent } from 'vue'
 import { RouteRecordRaw } from 'vue-router'
 
 const tabs: (RouteRecordRaw & {
-	name: string
-	icon: FunctionalComponent
-	iconFilled: FunctionalComponent
+  name: string
+  icon: FunctionalComponent
+  iconFilled: FunctionalComponent
 })[] = [
-	{
-		path: 'home',
-		name: '主页',
-		icon: homeOutline,
-		iconFilled: home,
-		component: () => import('./home.vue'),
-	},
-	{
-		path: 'follow',
-		name: '关注',
-		icon: personOutline,
-		iconFilled: person,
-		component: () => import('./follow.vue'),
-	},
-	{
-		path: 'me',
-		name: '我的',
-		icon: accountOutline,
-		iconFilled: account,
-		component: () => import('./me.vue'),
-	},
+  {
+    path: 'home',
+    name: '主页',
+    icon: homeOutline,
+    iconFilled: home,
+    component: () => import('./home.vue'),
+  },
+  {
+    path: 'follow',
+    name: '关注',
+    icon: personOutline,
+    iconFilled: person,
+    component: () => import('./follow.vue'),
+  },
+  {
+    path: 'me',
+    name: '我的',
+    icon: accountOutline,
+    iconFilled: account,
+    component: () => import('./me.vue'),
+  },
 ]
 
 export default tabs

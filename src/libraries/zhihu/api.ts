@@ -2,27 +2,27 @@ import { Equals, If } from '@/utils/types'
 import { never, object, string, ZodObject, ZodType } from 'zod'
 
 const BASE_URL = 'https://api.zhihu.com/',
-	Api = {
-		recommend: defineApi('topstory/recommend', { data: <unknown>{} }),
+  Api = {
+    recommend: defineApi('topstory/recommend', { data: <unknown>{} }),
 
-		answer: defineApi('answer/%(id)s', {
-			data: <unknown>{},
-			param: object({ id: string() }),
-		}),
-	}
+    answer: defineApi('answer/%(id)s', {
+      data: <unknown>{},
+      param: object({ id: string() }),
+    }),
+  }
 
 // URLSearchParams
 type Query =
-	| string
-	| string[][]
-	| Record<string, string>
-	| URLSearchParams
-	| undefined
+  | string
+  | string[][]
+  | Record<string, string>
+  | URLSearchParams
+  | undefined
 
 type RealPartial<T> =
-	T extends Record<string, string>
-		? If<Equals<T, Record<string, string>>, T, Partial<T>>
-		: T
+  T extends Record<string, string>
+    ? If<Equals<T, Record<string, string>>, T, Partial<T>>
+    : T
 
 /**
  * Infer Types for Generic Type Parameters That Are Not Specified
@@ -35,31 +35,31 @@ type RealPartial<T> =
  */
 /** */
 function defineApi<
-	Data,
-	POutput,
-	QOutput extends Query = undefined,
-	PInput = never,
-	QInput = never,
+  Data,
+  POutput,
+  QOutput extends Query = undefined,
+  PInput = never,
+  QInput = never,
 >(
-	path: string,
-	{
-		data,
-		param = never(),
-		query = never(),
-	}: {
-		data: Data
-		param?: ZodType<POutput, any, PInput>
-		query?: ZodType<QOutput, any, QInput>
-	}
+  path: string,
+  {
+    data,
+    param = never(),
+    query = never(),
+  }: {
+    data: Data
+    param?: ZodType<POutput, any, PInput>
+    query?: ZodType<QOutput, any, QInput>
+  }
 ) {
-	return {
-		path,
-		data,
-		param,
-		query: <ZodType<RealPartial<QOutput>, any, RealPartial<QInput>>>(
-			(<unknown>(query instanceof ZodObject ? query.partial() : query))
-		),
-	}
+  return {
+    path,
+    data,
+    param,
+    query: <ZodType<RealPartial<QOutput>, any, RealPartial<QInput>>>(
+      (<unknown>(query instanceof ZodObject ? query.partial() : query))
+    ),
+  }
 }
 
 export { BASE_URL, Api, type Query }

@@ -1,7 +1,7 @@
 <template lang="pug">
 .counter
-	p {{ name }}: {{ count }}
-	v-btn(@pointerdown='count++') count++
+  p {{ name }}: {{ count }}
+  v-btn(@pointerdown='count++') count++
 </template>
 
 <script setup lang="ts">

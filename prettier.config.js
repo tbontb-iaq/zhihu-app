@@ -3,14 +3,13 @@
 
 /**@type {import("prettier").Options} */
 export default {
-	semi: false,
-	tabWidth: 2,
-	useTabs: true,
-	printWidth: 80,
-	singleQuote: true,
-	trailingComma: 'es5',
-	arrowParens: 'avoid',
-	htmlWhitespaceSensitivity: 'ignore',
+  semi: false,
+  tabWidth: 2,
+  printWidth: 80,
+  singleQuote: true,
+  trailingComma: 'es5',
+  arrowParens: 'avoid',
+  htmlWhitespaceSensitivity: 'ignore',
 
-	plugins: ['@prettier/plugin-pug'],
+  plugins: ['@prettier/plugin-pug'],
 }
