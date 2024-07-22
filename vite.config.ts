@@ -15,7 +15,7 @@ import { IonicResolver } from 'unplugin-vue-components/resolvers'
 import { VitePWA } from 'vite-plugin-pwa'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,7 +24,7 @@ export default defineConfig({
 		legacy(),
 		autoImport({
 			eslintrc: { enabled: true },
-			imports: ['vue', 'vue-router'],
+			imports: ['vue', 'vue-router', 'pinia', 'rxjs'],
 		}),
 		components({
 			resolvers: [
@@ -52,6 +52,21 @@ export default defineConfig({
 		alias: {
 			'~ms': '~icons/material-symbols',
 			'@': fileURLToPath(new URL('./src', import.meta.url)),
+		},
+	},
+	server: {
+		proxy: {
+			'/__vite_dev_proxy__': {
+				changeOrigin: true,
+				configure(_, options) {
+					options.rewrite = path => {
+						const proxyUrl = new URL(path, 'file:'),
+							url = new URL(proxyUrl.searchParams.get('url'))
+						options.target = url.origin
+						return url.pathname + url.search
+					}
+				},
+			},
 		},
 	},
 	test: { globals: true, environment: 'jsdom' },

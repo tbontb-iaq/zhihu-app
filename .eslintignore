@@ -4,6 +4,7 @@ node_modules
 /dist
 /ios
 /android
+/dev-dist
 
 
 # local env files
