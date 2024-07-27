@@ -1,9 +1,10 @@
 <template lang="pug">
-ion-app
-  ion-router-outlet
+router-view
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { RouterView } from 'vue-router'
+</script>
 
 <style lang="scss">
 @use '@/assets/styles/settings.scss';

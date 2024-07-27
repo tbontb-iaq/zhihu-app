@@ -1,7 +1,27 @@
+html {
+  user-select: none;
+  background: white;
+  font-variation-settings: 'wght' 400;
+  font-family: var(--ion-font-family);
+
+  > body {
+    > #app {
+      > div {
+        min-height: 100dvh;
+      }
+    }
+  }
+}
+
 ion-title {
   padding-inline: 20px;
 }
 
 button.v-btn {
   text-transform: none;
+}
+
+:root {
+  --ion-text-color: black;
+  --ion-font-family: source-han-sans-sc-variable, var(--ion-default-font);
 }

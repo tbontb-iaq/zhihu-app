@@ -23,7 +23,7 @@ function request<T>(...args: RequestParam) {
           throw new Error('Response is not JSON')
       }),
       mergeMap(r => r.json()),
-      timeout(3000),
+      timeout(30000),
       retry(1)
     )
   )

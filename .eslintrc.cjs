@@ -31,4 +31,7 @@ module.exports = {
       { singleline: { max: 5 }, multiline: { max: 5 } },
     ],
   },
+  settings: {
+    'import/core-modules': ['vue-router/auto-routes'],
+  },
 }

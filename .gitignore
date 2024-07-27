@@ -33,5 +33,6 @@ npm-debug.log*
 
 components.d.ts
 auto-imports.d.ts
+typed-router.d.ts
 .eslintrc-auto-import.json
 dev-dist/*
