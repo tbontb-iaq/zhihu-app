@@ -25,6 +25,7 @@
     "@vueuse/router": "^10.11.0",
     "@vueuse/rxjs": "^10.11.0",
     "ionicons": "^7.4.0",
+    "localforage": "^1.10.0",
     "pinia": "^2.2.0",
     "rxjs": "^7.8.1",
     "sprintf-js": "^1.1.3",

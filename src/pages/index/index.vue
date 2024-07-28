@@ -3,17 +3,16 @@
   v-lazy.tabs(v-for='t of tabs', :key='t.name', :options='{ threshold: 0.3 }')
     component(:is='t.component', :name='t.name', :icon='t.icon')
 
-  teleport(to='body')
-    v-layout
-      v-bottom-navigation(
-        grow,
-        mandatory,
-        :model-value='tab',
-        @update:model-value='updateScrollX'
-      )
-        v-btn(v-for='(t,i) of tabs', :key='t.name')
-          v-icon(:icon='i === tab ? t.iconFilled : t.icon')
-          span {{ t.name }}
+  v-bottom-navigation(
+    grow,
+    mandatory,
+    :class='{ hide }',
+    :model-value='tab',
+    @update:model-value='updateScrollX'
+  )
+    v-btn(v-for='(t,i) of tabs', :key='t.name')
+      v-icon(:icon='i === tab ? t.iconFilled : t.icon')
+      span {{ t.name }}
 </template>
 
 <script setup lang="ts">
@@ -45,7 +44,7 @@ const tabs = [
       component: defineAsyncComponent(() => import('./_me.vue')),
     },
   ],
-  offset = ref(0),
+  hide = ref(false),
   page = ref<HTMLDivElement>(),
   { x } = useScroll(page, { behavior: 'smooth' }),
   tab = computed(() => Math.round(x.value / innerWidth))
@@ -54,13 +53,14 @@ function updateScrollX(n: number) {
   x.value = n * innerWidth
 }
 
-provide(updateOffset, (n: number) => {
-  offset.value = Math.max(0, Math.min(56 + 4, offset.value + n))
+provide(ToggleNavbarKey, (force?: boolean) => {
+  if (force !== undefined) hide.value = force
+  else hide.value = !hide.value
 })
 </script>
 
 <script lang="ts">
-export const updateOffset = Symbol('update-offset')
+export const ToggleNavbarKey = Symbol('toggle-navbar')
 </script>
 
 <style scoped lang="scss">
@@ -80,35 +80,37 @@ export const updateOffset = Symbol('update-offset')
     scroll-snap-stop: always;
     scroll-snap-align: center;
   }
-}
 
-body {
-  > .v-layout {
-    > .v-bottom-navigation {
-      translate: 0 calc(v-bind(offset) * 1px);
-      box-shadow: 0 0 5px black;
+  > .v-bottom-navigation {
+    transition: 0.8s ease;
+    box-shadow: 0 0 5px black;
+    transition-property: translate box-shadow;
 
-      .v-btn {
-        transition: all 0.1s ease;
+    &.hide {
+      box-shadow: none;
+      translate: 0 56px;
+    }
 
-        .v-icon {
-          font-size: 30px;
-          + span {
-            font-size: 0;
-            transition: all 0.3s ease;
-          }
+    .v-btn {
+      transition: all 0.1s ease;
+
+      .v-icon {
+        font-size: 30px;
+        + span {
+          font-size: 0;
+          transition: all 0.3s ease;
         }
+      }
 
-        &.v-btn--selected {
-          color: $blue-500;
-          .v-icon + span {
-            font-size: 12px;
-          }
+      &.v-btn--selected {
+        color: $blue-500;
+        .v-icon + span {
+          font-size: 12px;
         }
+      }
 
-        > :deep(.v-btn__overlay) {
-          background: transparent;
-        }
+      > :deep(.v-btn__overlay) {
+        background: transparent;
       }
     }
   }

@@ -6,8 +6,9 @@ html {
 
   > body {
     > #app {
-      > div {
-        min-height: 100dvh;
+      > .v-application {
+        > .v-application__wrap {
+        }
       }
     }
   }

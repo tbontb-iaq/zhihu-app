@@ -1,4 +1,3 @@
-@forward 'vuetify/settings' with (
-  // $utilities: false,
-  $color-pack: false
-);
+@forward 'vuetify/settings';
+// $utilities: false
+// $color-pack: false
