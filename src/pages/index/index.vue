@@ -77,6 +77,7 @@ export const ToggleNavbarKey = Symbol('toggle-navbar')
     height: 100dvh;
     flex-shrink: 0;
     overflow-x: hidden;
+    position: relative;
     scroll-snap-stop: always;
     scroll-snap-align: center;
   }
@@ -84,7 +85,7 @@ export const ToggleNavbarKey = Symbol('toggle-navbar')
   > .v-bottom-navigation {
     transition: 0.8s ease;
     box-shadow: 0 0 5px black;
-    transition-property: translate box-shadow;
+    transition-property: translate, box-shadow;
 
     &.hide {
       box-shadow: none;

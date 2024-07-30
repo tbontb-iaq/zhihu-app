@@ -9,11 +9,11 @@
     template(#empty)
       p 没有更多了
   v-fab(
-    app,
     :loading,
     size='x-large',
-    :icon='refreshIcon',
     :class='{ hide }',
+    :icon='refreshIcon',
+    style='height: auto',
     color='light-blue-accent-3',
     @pointerdown='refresh'
   )
@@ -129,7 +129,7 @@ const KEY = 'home-feeds',
     background: white;
     transition: $hide-time ease;
     box-shadow: 0 0 10px black;
-    transition-property: top box-shadow;
+    transition-property: top, box-shadow;
 
     &.hide {
       top: -56px;
@@ -149,11 +149,15 @@ const KEY = 'home-feeds',
   }
   > .v-fab {
     $m: 20px;
+    right: 0;
+    bottom: 56px;
+    margin: $m;
+    position: absolute;
+    transition: $hide-time ease;
+    transition-property: translate;
 
     > :deep(.v-fab__container) {
-      transition: $hide-time ease;
-      transition-property: translate scale;
-      margin: calc(56px + $m) $m;
+      position: static;
 
       .v-icon {
         font-size: 3rem;
@@ -161,9 +165,7 @@ const KEY = 'home-feeds',
     }
 
     &.hide {
-      > :deep(.v-fab__container) {
-        translate: calc(64px + $m);
-      }
+      translate: calc(64px + $m);
     }
   }
 }

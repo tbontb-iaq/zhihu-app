@@ -24,7 +24,10 @@ export default defineConfig({
   plugins: [
     vueRouter({ exclude: ['**/_*'] }),
     vue({ template: { transformAssetUrls } }),
-    legacy(),
+    legacy({
+      modernPolyfills: true,
+      renderLegacyChunks: false,
+    }),
     autoImport({
       eslintrc: { enabled: true },
       imports: [
