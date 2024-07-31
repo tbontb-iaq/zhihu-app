@@ -16,7 +16,7 @@ export default <Partial<ManifestOptions>>{
     {
       purpose: 'any',
       sizes: '1000x1000',
-      src: '/favicon.svg',
+      src: '/favicon.png',
     },
   ],
 }
