@@ -26,7 +26,7 @@ const { target } = defineProps<{ target: Target }>(),
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/colors';
+@import '@styles/colors';
 
 .target-card {
   border-radius: 0;
@@ -41,7 +41,7 @@ const { target } = defineProps<{ target: Target }>(),
         margin-inline: 5px;
       }
       > .headline {
-        color: $gray-600;
+        color: $grey-d1;
       }
     }
   }

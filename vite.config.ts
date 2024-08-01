@@ -23,12 +23,8 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       vueRouter({ exclude: ['**/_*'] }),
-      vue({ template: { transformAssetUrls } }),
-      legacy({
-        modernPolyfills: true,
-        renderLegacyChunks: false,
-      }),
       autoImport({
+        vueTemplate: true,
         eslintrc: { enabled: true },
         imports: [
           'vue',
@@ -48,10 +44,15 @@ export default defineConfig(({ mode }) => {
           }),
         ],
       }),
+      vue({ template: { transformAssetUrls } }),
+      legacy({
+        modernPolyfills: true,
+        renderLegacyChunks: false,
+      }),
       vuetify({
         autoImport: true,
         styles: {
-          configFile: 'src/assets/styles/settings.scss',
+          configFile: './src/assets/styles/settings.scss',
         },
       }),
       icons(),
@@ -66,6 +67,9 @@ export default defineConfig(({ mode }) => {
       alias: {
         '~ms': '~icons/material-symbols',
         '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '@styles': fileURLToPath(
+          new URL('./src/assets/styles', import.meta.url)
+        ),
       },
     },
     server: {

@@ -64,7 +64,7 @@ export const ToggleNavbarKey = Symbol('toggle-navbar')
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/colors';
+@import '@styles/colors';
 
 .index-page {
   display: flex;
@@ -104,7 +104,7 @@ export const ToggleNavbarKey = Symbol('toggle-navbar')
       }
 
       &.v-btn--selected {
-        color: $blue-500;
+        color: $blue;
         .v-icon + span {
           font-size: 12px;
         }

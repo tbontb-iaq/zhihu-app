@@ -8,7 +8,7 @@ import { RouterView } from 'vue-router'
 </script>
 
 <style lang="scss">
-@use '@/assets/styles/settings.scss';
+@use '@styles/settings.scss';
 @use 'vuetify';
 
 /* Core CSS required for Ionic components to work properly */
@@ -38,5 +38,5 @@ import { RouterView } from 'vue-router'
 // @import '@ionic/vue/css/palettes/dark.system.css';
 @import '@ionic/vue/css/palettes/dark.class.css';
 
-@import '@/assets/styles/global.scss';
+@import '@styles/global.scss';
 </style>

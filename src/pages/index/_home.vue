@@ -2,7 +2,11 @@
 .home-page(ref='page')
   p.title(:class='{ hide }') {{ name }}
 
-  v-infinite-scroll(:items='feeds.items', @load='feeds.load')
+  v-infinite-scroll(
+    :key='feeds.items?.[0]?.id',
+    :items='feeds.items',
+    @load='feeds.load'
+  )
     template(v-for='item of feeds.items', :key='item.id')
       target-card(:target='item')
       v-divider
@@ -98,16 +102,16 @@ const KEY = 'home-feeds',
 
     async function refresh() {
       const recommend = await z.get(zApi.recommend)
-      items.value.splice(
-        0,
-        items.value.length,
-        ...recommend.data.map(d => d.target)
-      )
+      items.value = recommend.data.map(d => d.target)
     }
 
-    watch(items.value, async value => {
-      await localforage.setItem(KEY, toRaw(value))
-    })
+    watch(
+      items,
+      async value => {
+        await localforage.setItem(KEY, toRaw(value))
+      },
+      { deep: true }
+    )
 
     return { items, load, refresh }
   })

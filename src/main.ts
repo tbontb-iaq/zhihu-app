@@ -37,5 +37,5 @@ setTimeout(
     router.isReady().then(() => {
       SplashScreen.hide()
     }),
-  1000
+  500
 )

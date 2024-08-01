@@ -6,8 +6,8 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "vite.config.ts",
     "manifest.ts",
+    "vite.config.ts",
     "postcss.config.js",
     "stylelint.config.js"
   ]
