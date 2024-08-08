@@ -26,14 +26,7 @@ export default defineConfig(({ mode }) => {
       autoImport({
         vueTemplate: true,
         eslintrc: { enabled: true },
-        imports: [
-          'vue',
-          'vue-router',
-          'pinia',
-          'rxjs',
-          '@vueuse/core',
-          VueRouterAutoImports,
-        ],
+        imports: ['vue', 'pinia', 'rxjs', '@vueuse/core', VueRouterAutoImports],
       }),
       components({
         resolvers: [
@@ -76,6 +69,10 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/__vite_dev_proxy__': {
           changeOrigin: true,
+          cookieDomainRewrite: {
+            'zhihu.com': 'localhost',
+            '.zhihu.com': 'localhost',
+          },
           configure(_, options) {
             options.rewrite = path => {
               const proxyUrl = new URL(path, 'file:'),

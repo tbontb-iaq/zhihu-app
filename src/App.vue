@@ -1,6 +1,8 @@
 <template lang="pug">
 v-app
-  router-view
+  router-view(v-slot='{ Component, route }')
+    keep-alive
+      component(:is='Component', :key='route.path')
 </template>
 
 <script setup lang="ts">

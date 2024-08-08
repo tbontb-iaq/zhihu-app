@@ -31,10 +31,13 @@ npm-debug.log*
 /plugins
 /www
 
+key-store.jks
+
+.directory
 components.d.ts
 auto-imports.d.ts
 typed-router.d.ts
 .eslintrc-auto-import.json
+
 dev-dist/*
-key-store.jks
 android/app/release/

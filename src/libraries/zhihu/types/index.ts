@@ -4,7 +4,7 @@ interface Recommend {
   data: { target: Target }[]
 }
 
-type Target = Answer
+type Target = AnswerTarget
 
 interface Author {
   id: string
@@ -47,7 +47,7 @@ interface Question {
   url: string
 }
 
-interface Answer {
+interface AnswerTarget {
   id: number
   type: 'answer'
   answer_type: 'normal'
@@ -83,6 +83,28 @@ interface Answer {
   url: string
 }
 
+interface Answer {
+  answer_type: 'normal'
+  author: Author
+  biz_ext: Record<string, unknown>
+  content_need_truncated: boolean
+  created_time: number
+  extras: string
+  id: number
+  is_collapsed: boolean
+  is_copyable: boolean
+  is_jump_native: boolean
+  question: Question
+  relationship: {
+    upvoted_followees: unknown[]
+  }
+  type: 'answer'
+  updated_time: number
+  url: string
+
+  content: string
+}
+
 interface Paging {
   is_end: boolean
   is_start: boolean
@@ -91,4 +113,4 @@ interface Paging {
   totals: number
 }
 
-export type { Recommend, Author, Question, Answer, Target }
+export type { Recommend, Author, Question, AnswerTarget, Target, Answer }

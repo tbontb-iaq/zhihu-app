@@ -1,15 +1,20 @@
-import { Recommend } from './types'
-import { Equals, If } from '@/utils/types'
+import { Answer, Recommend } from './types'
+import { DeepKeyof, Equals, If, Path } from '@/utils/types'
 
-import { never, object, string, ZodObject, ZodType } from 'zod'
+import { array, never, object, string, ZodObject, ZodType } from 'zod'
 
 const BASE_URL = 'https://api.zhihu.com/',
   Api = {
     recommend: defineApi('topstory/recommend', { data: <Recommend>{} }),
 
-    answer: defineApi('answer/%(id)s', {
-      data: <unknown>{},
+    answer: defineApi('answers/%(id)s', {
+      data: <Answer>{},
       param: object({ id: string() }),
+      query: object({
+        include: array(
+          string() as ZodType<Path<Answer> | DeepKeyof<Answer>>
+        ).transform(s => s.join(',')),
+      }),
     }),
   }
 
@@ -22,8 +27,8 @@ type Query =
   | undefined
 
 type RealPartial<T> =
-  T extends Record<string, string>
-    ? If<Equals<T, Record<string, string>>, T, Partial<T>>
+  T extends Record<string, unknown>
+    ? If<Equals<T, Record<string, unknown>>, T, Partial<T>>
     : T
 
 /**

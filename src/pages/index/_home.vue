@@ -1,5 +1,5 @@
 <template lang="pug">
-.home-page(ref='page')
+.home-page(ref='page', :class='[saveScrollPos]')
   p.title(:class='{ hide }') {{ name }}
 
   v-infinite-scroll(
@@ -13,11 +13,11 @@
     template(#empty)
       p 没有更多了
   v-fab(
-    :loading,
     size='x-large',
     :class='{ hide }',
     :icon='refreshIcon',
     style='height: auto',
+    :loading='feeds.loading',
     color='light-blue-accent-3',
     @pointerdown='refresh'
   )
@@ -33,7 +33,6 @@ defineProps<{ name: string }>()
 const offset = 2,
   hide = ref(false),
   feeds = useFeeds(),
-  loading = ref(false),
   page = ref<HTMLDivElement>(),
   toggleNavbar: (force?: boolean) => void = inject(ToggleNavbarKey)!,
   { y } = useScroll(page, {
@@ -41,9 +40,7 @@ const offset = 2,
     eventListenerOptions: { passive: true },
   }),
   refresh = async () => {
-    loading.value = true
     await feeds.refresh()
-    loading.value = false
     y.value = 0
   }
 
@@ -71,6 +68,7 @@ import localforage from 'localforage'
 import { type GlobalComponents } from 'vue'
 
 import { type Target, z, zApi } from '@/libraries/zhihu'
+import { saveScrollPos } from '@/plugins/restore-scroll-pos'
 
 type OnLoad = NonNullable<
   InstanceType<GlobalComponents['VInfiniteScroll']>['onLoad']
@@ -78,46 +76,65 @@ type OnLoad = NonNullable<
 
 const KEY = 'home-feeds',
   useFeeds = defineStore(KEY, () => {
-    const items = ref<Target[]>([]),
-      load = ref<OnLoad>(async ({ done, side }) => {
-        load.value = async ({ done }) => {
-          if (items.value.length > 20) {
-            done('empty')
-            return
+    let index = 0,
+      is_end = false
+    const count = 6,
+      loading = ref(false),
+      items = ref<Target[]>([]),
+      cache = ref<Target[]>([]),
+      load: OnLoad = async ({ done }) => {
+        if (loading.value) watchOnce(loading, () => done('ok'))
+        else {
+          loading.value = true
+          if (index === cache.value.length && items.value.length < 20)
+            await get.value()
+          if (index === cache.value.length) done('empty')
+          else {
+            const n = Math.min(count, cache.value.length - index)
+            items.value.push(...cache.value.slice(index, index + n))
+            index += n
+            done('ok')
+          }
+          loading.value = false
+        }
+      },
+      get = {
+        value: async () => {
+          get.value = async () => {
+            if (is_end) return
+            const recommend = await z.get(zApi.recommend)
+            cache.value.push(...recommend.data.map(d => d.target))
+
+            if (recommend.paging.is_end) is_end = true
           }
 
-          const recommend = await z.get(zApi.recommend)
-          items.value.push(...recommend.data.map(d => d.target))
-
-          if (recommend.paging.is_end) done('empty')
-          else done('ok')
-        }
-
-        const saved = await localforage.getItem<Target[]>(KEY)
-        if (saved) {
-          items.value.push(...saved)
-          done('ok')
-        } else await load.value({ done, side })
-      })
+          const saved = await localforage.getItem<Target[]>(KEY)
+          if (saved) cache.value.push(...saved)
+          else await get.value()
+        },
+      }
 
     async function refresh() {
-      const recommend = await z.get(zApi.recommend)
-      items.value = recommend.data.map(d => d.target)
+      loading.value = true
+      is_end = false
+      await get.value()
+      cache.value.splice(0, index)
+      index = 0
+      items.value = []
+      loading.value = false
     }
 
-    watch(
-      items,
-      async value => {
-        await localforage.setItem(KEY, toRaw(value))
-      },
-      { deep: true }
-    )
+    watchArray(cache, async arr => await localforage.setItem(KEY, toRaw(arr)), {
+      deep: true,
+    })
 
-    return { items, load, refresh }
+    return { items, loading, load, refresh }
   })
 </script>
 
 <style scoped lang="scss">
+@import '@styles/colors';
+
 .home-page {
   height: 100%;
   overflow-y: auto;
@@ -129,10 +146,10 @@ const KEY = 'home-feeds',
     z-index: 1;
     position: sticky;
     font-size: 1.25rem;
-    padding: 13px 20px;
+    padding: 0.65em 1em;
     background: white;
     transition: $hide-time ease;
-    box-shadow: 0 0 10px black;
+    box-shadow: 0 0 0.6em black;
     transition-property: top, box-shadow;
 
     &.hide {
@@ -145,14 +162,13 @@ const KEY = 'home-feeds',
       padding: 0;
     }
     > .target-card {
-      flex-shrink: 0;
     }
     > .v-divider:last-of-type {
       display: none;
     }
   }
   > .v-fab {
-    $m: 20px;
+    $m: 1.5em;
     right: 0;
     bottom: 56px;
     margin: $m;

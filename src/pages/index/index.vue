@@ -84,7 +84,7 @@ export const ToggleNavbarKey = Symbol('toggle-navbar')
 
   > .v-bottom-navigation {
     transition: 0.8s ease;
-    box-shadow: 0 0 5px black;
+    box-shadow: 0 0 0.25em black;
     transition-property: translate, box-shadow;
 
     &.hide {

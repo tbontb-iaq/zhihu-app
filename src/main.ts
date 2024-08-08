@@ -6,12 +6,9 @@ import { createPinia } from 'pinia'
 import { createVuetify } from 'vuetify'
 import { IonicVue } from '@ionic/vue'
 
-import { routes, handleHotUpdate } from 'vue-router/auto-routes'
 import { createRouter, createWebHistory } from 'vue-router'
-
-import { SplashScreen } from '@capacitor/splash-screen'
-
-SplashScreen.show()
+import { routes, handleHotUpdate } from 'vue-router/auto-routes'
+import { DataLoaderPlugin } from 'unplugin-vue-router/data-loaders'
 
 const history = createWebHistory(import.meta.env.BASE_URL),
   router = createRouter({ routes, history }),
@@ -20,22 +17,15 @@ const history = createWebHistory(import.meta.env.BASE_URL),
   app = createApp(App)
 
 app
-  .use(plugins)
   .use(IonicVue, { mode: 'md' })
   .use(vuetify)
   .use(pinia)
+  .use(DataLoaderPlugin, { router })
   .use(router)
+  .use(plugins)
 
 if (import.meta.hot) handleHotUpdate(router)
 
 router.isReady().then(() => {
   app.mount('#app')
 })
-
-setTimeout(
-  () =>
-    router.isReady().then(() => {
-      SplashScreen.hide()
-    }),
-  500
-)
