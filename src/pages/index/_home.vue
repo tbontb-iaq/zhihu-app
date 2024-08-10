@@ -1,5 +1,5 @@
 <template lang="pug">
-.home-page(ref='page', :class='[saveScrollPos]')
+.home-page(ref='page', :class='saveScrollPos')
   p.title(:class='{ hide }') {{ name }}
 
   v-infinite-scroll(

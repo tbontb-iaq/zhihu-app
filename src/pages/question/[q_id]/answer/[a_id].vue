@@ -40,7 +40,7 @@ export const useData = defineBasicLoader(
 
 <style scoped lang="scss">
 .question-page {
-  margin: 0.75em;
+  padding: 0.75em;
 
   > .question {
     > .title {

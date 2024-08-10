@@ -65,6 +65,11 @@ export default defineConfig(({ mode }) => {
         ),
       },
     },
+    css: {
+      modules: {
+        localsConvention: 'camelCaseOnly',
+      },
+    },
     server: {
       proxy: {
         '/__vite_dev_proxy__': {

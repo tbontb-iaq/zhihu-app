@@ -1,25 +1,32 @@
+@import './colors.scss';
+
 html {
   user-select: none;
-  background: white;
   font-variation-settings: 'wght' 400;
   font-family: var(--ion-font-family);
 
   > body {
-    overflow: auto;
     > #app {
       > .v-application {
         > .v-application__wrap {
+          background: $grey-l4;
+          > div {
+            width: 100dvw;
+            height: 100dvh;
+            background: white;
+            overflow: clip auto;
+          }
         }
       }
     }
   }
 }
 
-button.v-btn {
-  text-transform: none;
-}
-
 :root {
   --ion-text-color: black;
   --ion-font-family: source-han-sans-sc-variable, var(--ion-default-font);
+}
+
+button.v-btn {
+  text-transform: none;
 }
