@@ -4,5 +4,11 @@ import preset_env from 'postcss-preset-env'
 
 /**@type {import("postcss-load-config").Config} */
 export default {
-  plugins: [preset_env()],
+  plugins: [
+    preset_env({
+      features: {
+        'cascade-layers': false,
+      },
+    }),
+  ],
 }

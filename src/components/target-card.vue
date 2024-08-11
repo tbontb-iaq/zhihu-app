@@ -33,8 +33,6 @@ function jump() {
 </script>
 
 <style scoped lang="scss">
-@import '@styles/colors';
-
 .target-card {
   border-radius: 0;
   padding: 0.5em 1em;

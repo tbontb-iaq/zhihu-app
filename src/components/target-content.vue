@@ -38,8 +38,6 @@ const parser = new DOMParser()
 </script>
 
 <style lang="scss">
-@import '@styles/colors';
-
 .target-content {
   user-select: text;
 

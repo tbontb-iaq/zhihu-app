@@ -13,6 +13,6 @@ export default <Plugin>function (app) {
   app.use(splashScreen)
   app.use(
     restoreScrollPos,
-    ['#app', '.v-application', '.v-application__wrap'].join('>')
+    ['#app', '.v-application', '.v-application__wrap', 'div'].join('>')
   )
 }

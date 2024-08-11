@@ -66,8 +66,12 @@ export default defineConfig(({ mode }) => {
       },
     },
     css: {
+      devSourcemap: true,
       modules: {
         localsConvention: 'camelCaseOnly',
+      },
+      preprocessorOptions: {
+        scss: { additionalData: '@use "@styles/colors" as *;' },
       },
     },
     server: {

@@ -1,0 +1,6 @@
+@use 'vuetify';
+
+@import '@styles/ionic.scss' layer(ionic);
+@import '@styles/global.scss' layer(global);
+
+@layer base, ionic, vuetify, overrides, global;

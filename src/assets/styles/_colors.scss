@@ -1,39 +1,37 @@
-/**
- * 由以下代码生成
-
-@use 'vuetify/lib/styles/settings/colors';
-
-@function str-replace($string, $search, $replace: '') {
-  $index: str-index($string, $search);
-
-  @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace +
-      str-replace(
-        str-slice($string, $index + str-length($search)),
-        $search,
-        $replace
-      );
-  }
-
-  @return $string;
-}
-
-@each $group, $list in colors.$colors {
-  @debug '// ' + to-upper-case($group);
-  @each $name, $value in $list {
-    @if ($name == 'base') {
-      $name: $group;
-    } @else {
-      $name: str-replace($name, 'accent-', 'a');
-      $name: str-replace($name, 'darken-', 'd');
-      $name: str-replace($name, 'lighten-', 'l');
-      $name: $group + '-' + $name;
-    }
-    @debug '$' + $name + ': ' + $value + ';';
-  }
-  @debug '';
-}
- */
+// 由以下代码生成
+//
+// @use 'vuetify/lib/styles/settings/colors';
+//
+// @function str-replace($string, $search, $replace: '') {
+//   $index: str-index($string, $search);
+//
+//   @if $index {
+//     @return str-slice($string, 1, $index - 1) + $replace +
+//       str-replace(
+//         str-slice($string, $index + str-length($search)),
+//         $search,
+//         $replace
+//       );
+//   }
+//
+//   @return $string;
+// }
+//
+// @each $group, $list in colors.$colors {
+//   @debug '// ' + to-upper-case($group);
+//   @each $name, $value in $list {
+//     @if ($name == 'base') {
+//       $name: $group;
+//     } @else {
+//       $name: str-replace($name, 'accent-', 'a');
+//       $name: str-replace($name, 'darken-', 'd');
+//       $name: str-replace($name, 'lighten-', 'l');
+//       $name: $group + '-' + $name;
+//     }
+//     @debug '$' + $name + ': ' + $value + ';';
+//   }
+//   @debug '';
+// }
 
 // RED
 $red: #f44336;

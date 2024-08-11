@@ -64,8 +64,6 @@ export const ToggleNavbarKey = Symbol('toggle-navbar')
 </script>
 
 <style scoped lang="scss">
-@import '@styles/colors';
-
 .index-page {
   display: flex;
   overflow-x: auto;

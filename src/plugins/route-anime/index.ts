@@ -12,10 +12,6 @@ export default <Plugin>function (app) {
 
       from.meta.transition_name = to.meta.transition_name =
         back === from.path ? 'slide-left' : 'slide-right'
-      // ;[from.meta.transition_name, to.meta.transition_name] =
-      //   back === from.path
-      //     ? ['slide-right', 'slide-left']
-      //     : ['slide-right', 'slide-left']
     }
   })
 }

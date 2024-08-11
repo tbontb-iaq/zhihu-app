@@ -133,8 +133,6 @@ const KEY = 'home-feeds',
 </script>
 
 <style scoped lang="scss">
-@import '@styles/colors';
-
 .home-page {
   height: 100%;
   overflow-y: auto;

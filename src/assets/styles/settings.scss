@@ -1,3 +1,5 @@
-@forward 'vuetify/settings';
+@forward 'vuetify/settings' with (
+  $layers: true
+);
 // $utilities: false
 // $color-pack: false

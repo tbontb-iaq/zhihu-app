@@ -14,8 +14,6 @@ const { author } = defineProps<{ author: Author }>()
 </script>
 
 <style scoped lang="scss">
-@import '@styles/colors';
-
 .author-card {
   margin: 0.5em 0;
   flex-wrap: nowrap;
