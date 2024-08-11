@@ -66,6 +66,9 @@ function jump() {
   }
   > .v-card-text {
     display: flex;
+    > span {
+      max-width: 100%;
+    }
   }
   > .v-card-actions {
     min-height: 0;

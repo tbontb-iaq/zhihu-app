@@ -11,7 +11,13 @@
       target-card(:target='item')
       v-divider
     template(#empty)
-      p 没有更多了
+      p.no-more 没有更多了
+    template(#loading)
+      v-progress-circular.loading(indeterminate, size='98')
+    template(#error='{ props }')
+      p.error
+        | 出错了请
+        v-btn(v-bind='props', variant='tonal') 重试
   v-fab(
     size='x-large',
     :class='{ hide }',
@@ -64,11 +70,11 @@ useSubscription(
 
 <script lang="ts">
 import { pairwise } from 'rxjs'
-import localforage from 'localforage'
 import { type GlobalComponents } from 'vue'
 
 import { type Target, z, zApi } from '@/libraries/zhihu'
 import { saveScrollPos } from '@/plugins/restore-scroll-pos'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 type OnLoad = NonNullable<
   InstanceType<GlobalComponents['VInfiniteScroll']>['onLoad']
@@ -79,54 +85,49 @@ const KEY = 'home-feeds',
     let index = 0,
       is_end = false
     const count = 6,
-      loading = ref(false),
+      loading = ref(true),
       items = ref<Target[]>([]),
-      cache = ref<Target[]>([]),
+      { data: cache, isFinished } = useIDBKeyval<Target[]>(KEY, []),
       load: OnLoad = async ({ done }) => {
         if (loading.value) watchOnce(loading, () => done('ok'))
-        else {
-          loading.value = true
-          if (index === cache.value.length && items.value.length < 20)
-            await get.value()
-          if (index === cache.value.length) done('empty')
-          else {
-            const n = Math.min(count, cache.value.length - index)
-            items.value.push(...cache.value.slice(index, index + n))
-            index += n
-            done('ok')
+        else
+          try {
+            loading.value = true
+            if (index === cache.value.length && items.value.length < 20)
+              await get()
+            if (index === cache.value.length) done('empty')
+            else {
+              const n = Math.min(count, cache.value.length - index)
+              items.value.push(...cache.value.slice(index, index + n))
+              index += n
+              done('ok')
+            }
+          } catch (e) {
+            done('error')
+          } finally {
+            loading.value = false
           }
-          loading.value = false
-        }
-      },
-      get = {
-        value: async () => {
-          get.value = async () => {
-            if (is_end) return
-            const recommend = await z.get(zApi.recommend)
-            cache.value.push(...recommend.data.map(d => d.target))
-
-            if (recommend.paging.is_end) is_end = true
-          }
-
-          const saved = await localforage.getItem<Target[]>(KEY)
-          if (saved) cache.value.push(...saved)
-          else await get.value()
-        },
       }
+
+    watchOnce(isFinished, v => (loading.value = !v))
+
+    async function get() {
+      if (is_end) return
+      const recommend = await z.get(zApi.recommend)
+      cache.value.push(...recommend.data.map(d => d.target))
+
+      if (recommend.paging.is_end) is_end = true
+    }
 
     async function refresh() {
       loading.value = true
       is_end = false
-      await get.value()
+      await get()
       cache.value.splice(0, index)
       index = 0
       items.value = []
       loading.value = false
     }
-
-    watchArray(cache, async arr => await localforage.setItem(KEY, toRaw(arr)), {
-      deep: true,
-    })
 
     return { items, loading, load, refresh }
   })
@@ -156,8 +157,24 @@ const KEY = 'home-feeds',
     }
   }
   > .v-infinite-scroll {
-    > :deep(.v-infinite-scroll__side:first-child) {
-      padding: 0;
+    > :deep(.v-infinite-scroll__side) {
+      &:first-child {
+        padding: 0;
+      }
+      &:last-child {
+        > .no-more {
+          margin: 2em;
+        }
+        > .loading {
+          margin-block: 10em;
+        }
+        > .error {
+          margin-block: 2em;
+          > .v-btn {
+            margin-inline: 1em;
+          }
+        }
+      }
     }
     > .target-card {
     }
