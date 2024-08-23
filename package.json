@@ -44,6 +44,7 @@
     "@types/sprintf-js": "^1.1.4",
     "@vitejs/plugin-legacy": "^5.4.1",
     "@vitejs/plugin-vue": "^5.1.2",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/language-plugin-pug": "^2.0.29",
     "@vue/test-utils": "^2.4.6",

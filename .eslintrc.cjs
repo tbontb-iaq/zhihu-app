@@ -7,7 +7,12 @@ const env = process.env.NODE_ENV,
 module.exports = {
   root: true,
   env: { node: true },
-  parserOptions: { ecmaVersion: 2020 },
+  parserOptions: {
+    ecmaVersion: 2020,
+    ecmaFeatures: {
+      jsx: false,
+    },
+  },
   extends: [
     './.eslintrc-auto-import.json',
     'plugin:vue/vue3-recommended',

@@ -5,6 +5,7 @@ import manifest from './manifest'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import legacy from '@vitejs/plugin-legacy'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 import icons from 'unplugin-icons/vite'
 import vueRouter from 'unplugin-vue-router/vite'
@@ -37,6 +38,7 @@ export default defineConfig(({ mode }) => {
           }),
         ],
       }),
+      vueJsx(),
       vue({ template: { transformAssetUrls } }),
       legacy({
         modernPolyfills: true,

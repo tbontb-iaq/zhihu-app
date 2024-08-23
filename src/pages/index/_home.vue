@@ -83,16 +83,16 @@ type OnLoad = NonNullable<
 const KEY = 'home-feeds',
   useFeeds = defineStore(KEY, () => {
     let index = 0,
-      is_end = false
+      isEnd = false
     const count = 6,
-      loading = ref(true),
+      isLoading = ref(true),
       items = ref<Target[]>([]),
       { data: cache, isFinished } = useIDBKeyval<Target[]>(KEY, []),
       load: OnLoad = async ({ done }) => {
-        if (loading.value) watchOnce(loading, () => done('ok'))
+        if (isLoading.value) watchOnce(isLoading, () => done('ok'))
         else
           try {
-            loading.value = true
+            isLoading.value = true
             if (index === cache.value.length && items.value.length < 20)
               await get()
             if (index === cache.value.length) done('empty')
@@ -105,31 +105,31 @@ const KEY = 'home-feeds',
           } catch (e) {
             done('error')
           } finally {
-            loading.value = false
+            isLoading.value = false
           }
       }
 
-    watchOnce(isFinished, v => (loading.value = !v))
+    watchOnce(isFinished, v => (isLoading.value = !v))
 
     async function get() {
-      if (is_end) return
+      if (isEnd) return
       const recommend = await z.get(zApi.recommend)
       cache.value.push(...recommend.data.map(d => d.target))
 
-      if (recommend.paging.is_end) is_end = true
+      if (recommend.paging.is_end) isEnd = true
     }
 
     async function refresh() {
-      loading.value = true
-      is_end = false
+      isLoading.value = true
+      isEnd = false
       await get()
       cache.value.splice(0, index)
       index = 0
       items.value = []
-      loading.value = false
+      isLoading.value = false
     }
 
-    return { items, loading, load, refresh }
+    return { items, loading: isLoading, load, refresh }
   })
 </script>
 
