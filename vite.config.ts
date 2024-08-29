@@ -70,7 +70,7 @@ export default defineConfig(({ mode }) => {
     css: {
       devSourcemap: true,
       modules: {
-        localsConvention: 'camelCaseOnly',
+        localsConvention: 'camelCase',
       },
       preprocessorOptions: {
         scss: { additionalData: '@use "@styles/colors" as *;' },

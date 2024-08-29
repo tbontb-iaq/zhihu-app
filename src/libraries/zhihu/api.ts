@@ -1,4 +1,4 @@
-import { Answer, Recommend } from './types'
+import { Answer, Recommend, Me } from './types'
 import { DeepKeyof, Equals, If, Path } from '@/utils/types'
 
 import { array, never, object, string, ZodObject, ZodType } from 'zod'
@@ -11,9 +11,14 @@ const BASE_URL = 'https://api.zhihu.com/',
       data: <Answer>{},
       param: object({ id: string() }),
       query: object({
-        include: array(
-          string() as ZodType<Path<Answer> | DeepKeyof<Answer>>
-        ).transform(s => s.join(',')),
+        include: include<Answer>(),
+      }),
+    }),
+
+    me: defineApi('me', {
+      data: <Me>{},
+      query: object({
+        include: include<Me>(),
       }),
     }),
   }
@@ -68,6 +73,12 @@ function defineApi<
       (<unknown>(query instanceof ZodObject ? query.partial() : query))
     ),
   }
+}
+
+function include<T>() {
+  return array(
+    string() as unknown as ZodType<Extract<Path<T> | DeepKeyof<T>, string>>
+  ).transform(s => s.join(','))
 }
 
 export { BASE_URL, Api, type Query }

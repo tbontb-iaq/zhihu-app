@@ -12,6 +12,6 @@ export default <Plugin>function (app) {
       router.isReady().then(() => {
         SplashScreen.hide()
       }),
-    500
+    200
   )
 }
