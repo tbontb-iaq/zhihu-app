@@ -2,7 +2,8 @@
 .login-page
   p.title 登录
   main
-    p 使用 Cookie 登录
+    p
+      span 使用 Cookie 登录
       v-tooltip(location='bottom')
         template(#activator='{ props }')
           v-btn(

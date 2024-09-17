@@ -5,7 +5,7 @@
   v-infinite-scroll(
     :key='feeds.items?.[0]?.id',
     :items='feeds.items',
-    @load='feeds.load'
+    @load='load'
   )
     template(v-for='item of feeds.items', :key='item.id')
       target-card(:target='item')
@@ -23,7 +23,7 @@
     :class='{ hide }',
     :icon='refreshIcon',
     style='height: auto',
-    :loading='feeds.loading',
+    :loading='feeds.isLoading',
     color='light-blue-accent-3',
     @pointerdown='refresh'
   )
@@ -48,6 +48,26 @@ const offset = 2,
   refresh = async () => {
     await feeds.refresh()
     y.value = 0
+  },
+  load: OnLoad = async ({ done }) => {
+    if (feeds.isLoading)
+      watchOnce(
+        () => feeds.isLoading,
+        () => done('ok')
+      )
+    else
+      try {
+        // TODO: 移除此限制
+        if (feeds.items.length > 20) {
+          done('empty')
+          return
+        }
+        await feeds.load()
+        if (feeds.isEnd) done('empty')
+        else done('ok')
+      } catch (e) {
+        done('error')
+      }
   }
 
 useSubscription(
@@ -82,46 +102,34 @@ type OnLoad = NonNullable<
 
 const KEY = 'home-feeds',
   useFeeds = defineStore(KEY, () => {
-    let index = 0,
-      isEnd = false
+    let index = 0
     const count = 6,
       isLoading = ref(true),
+      isEnd = ref(false),
       items = ref<Target[]>([]),
-      { data: cache, isFinished } = useIDBKeyval<Target[]>(KEY, []),
-      load: OnLoad = async ({ done }) => {
-        if (isLoading.value) watchOnce(isLoading, () => done('ok'))
-        else
-          try {
-            isLoading.value = true
-            if (index === cache.value.length && items.value.length < 20)
-              await get()
-            if (index === cache.value.length) done('empty')
-            else {
-              const n = Math.min(count, cache.value.length - index)
-              items.value.push(...cache.value.slice(index, index + n))
-              index += n
-              done('ok')
-            }
-          } catch (e) {
-            done('error')
-          } finally {
-            isLoading.value = false
-          }
-      }
+      { data: cache, isFinished } = useIDBKeyval<Target[]>(KEY, [])
 
     watchOnce(isFinished, v => (isLoading.value = !v))
 
     async function get() {
-      if (isEnd) return
+      if (isEnd.value) return
       const recommend = await z.get(zApi.recommend)
       cache.value.push(...recommend.data.map(d => d.target))
 
-      if (recommend.paging.is_end) isEnd = true
+      if (recommend.paging.is_end) isEnd.value = true
+    }
+
+    async function load() {
+      isLoading.value = true
+      if (index + count > cache.value.length) await get()
+      items.value.push(...cache.value.slice(index, index + count))
+      index += count
+      isLoading.value = false
     }
 
     async function refresh() {
       isLoading.value = true
-      isEnd = false
+      isEnd.value = false
       await get()
       cache.value.splice(0, index)
       index = 0
@@ -129,7 +137,7 @@ const KEY = 'home-feeds',
       isLoading.value = false
     }
 
-    return { items, loading: isLoading, load, refresh }
+    return { items, isLoading, isEnd, load, refresh }
   })
 </script>
 

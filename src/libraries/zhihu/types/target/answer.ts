@@ -28,6 +28,9 @@ interface AnswerTarget {
   url: string
   visited_count: number
   voteup_count: number
+
+  thumbnail?: string
+  thumbnails?: string[]
 }
 
 export type { AnswerTarget }
