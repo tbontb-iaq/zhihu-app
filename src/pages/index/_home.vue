@@ -100,14 +100,14 @@ type OnLoad = NonNullable<
   InstanceType<GlobalComponents['VInfiniteScroll']>['onLoad']
 >
 
-const KEY = 'home-feeds',
-  useFeeds = defineStore(KEY, () => {
+const HOME_FEEDS = 'home-feeds',
+  useFeeds = defineStore(HOME_FEEDS, () => {
     let index = 0
     const count = 6,
       isLoading = ref(true),
       isEnd = ref(false),
       items = ref<Target[]>([]),
-      { data: cache, isFinished } = useIDBKeyval<Target[]>(KEY, [])
+      { data: cache, isFinished } = useIDBKeyval<Target[]>(HOME_FEEDS, [])
 
     watchOnce(isFinished, v => (isLoading.value = !v))
 

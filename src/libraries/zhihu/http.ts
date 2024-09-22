@@ -18,6 +18,8 @@ async function get<Data, POutput, QOutput extends Query, PInput, QInput>(
     init?: RequestInit,
   ]
 ): Promise<Awaited<Data>> {
+  args.push({}, {})
+
   const param =
       api.param instanceof ZodNever
         ? <POutput>{}
@@ -26,7 +28,7 @@ async function get<Data, POutput, QOutput extends Query, PInput, QInput>(
       api.query instanceof ZodNever
         ? <QOutput>{}
         : await api.query.parseAsync(args.shift()),
-    init = <RequestInit>args[0] ?? {},
+    init = <RequestInit>args[0],
     search = new URLSearchParams(query),
     search_str = search.size ? `?${search}` : '',
     path = sprintf(api.path, param),
