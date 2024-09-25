@@ -5,8 +5,10 @@ v-app
       transition(:name='route.meta.transition_name')
         keep-alive
           component(:is='Component', :key='route.path')
+teleport(to='body') 
+  VUIToolkit
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { VUIToolkit } from '@/libraries/v-ui-toolkit'
 </script>

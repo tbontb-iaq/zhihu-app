@@ -9,9 +9,7 @@ module.exports = {
   env: { node: true },
   parserOptions: {
     ecmaVersion: 2020,
-    ecmaFeatures: {
-      jsx: false,
-    },
+    ecmaFeatures: { jsx: true },
   },
   extends: [
     './.eslintrc-auto-import.json',

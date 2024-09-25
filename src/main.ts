@@ -1,3 +1,4 @@
+import '@styles/layers.scss'
 import '@styles/main.scss'
 
 import App from './App.vue'

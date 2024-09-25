@@ -52,4 +52,11 @@ function arr<T>(
   else return arg1[num(arg1.length)]
 }
 
-export default { num, char, str, bool, arr }
+function key(map: Map<string, unknown>) {
+  let key
+  do key = str()
+  while (map.has(key))
+  return key
+}
+
+export default { num, char, str, bool, arr, key }
