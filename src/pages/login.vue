@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
 import { identity } from 'rxjs'
+import { DateTime } from 'luxon'
 import { useUser } from '@/store/user'
 import { snackbar } from '@/libraries/v-ui-toolkit'
 import { useCookies } from '@vueuse/integrations/useCookies'
@@ -40,6 +41,7 @@ async function tryLogin() {
       secure: true,
       // @ts-expect-error 对象字面量只能指定已知属性，并且“encode”不在类型“CookieSetOptions”中
       encode: identity,
+      expires: DateTime.now().plus({ year: 1 }).toJSDate(),
     })
     await user.tryLogin()
     if ((await user.isLogged).value) {
