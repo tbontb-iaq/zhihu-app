@@ -73,7 +73,10 @@ export default defineConfig(({ mode }) => {
         localsConvention: 'camelCase',
       },
       preprocessorOptions: {
-        scss: { additionalData: '@use "@styles/colors" as *;' },
+        scss: {
+          api: 'modern-compiler',
+          additionalData: '@use "@styles/colors" as *;',
+        },
       },
     },
     server: {

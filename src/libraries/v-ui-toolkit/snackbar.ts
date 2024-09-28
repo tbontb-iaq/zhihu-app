@@ -14,7 +14,7 @@ function snackbar(text: string) {
     return h(
       VSnackbar,
       {
-        timeout: 10000,
+        timeout: 2000,
         modelValue: model.value,
         'onUpdate:modelValue': v => (model.value = v),
       },

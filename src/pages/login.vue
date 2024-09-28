@@ -20,32 +20,34 @@
 </template>
 
 <script setup lang="ts">
-import question from '~ms/question-mark-rounded'
-import { useCookies } from '@vueuse/integrations/useCookies'
-import { useUser } from '@/store/user'
 import { identity } from 'rxjs'
+import { useUser } from '@/store/user'
+import { snackbar } from '@/libraries/v-ui-toolkit'
+import { useCookies } from '@vueuse/integrations/useCookies'
+import question from '~ms/question-mark-rounded'
 
 const token = ref(''),
   isLoading = ref(false),
   user = useUser(),
-  cookies = useCookies()
+  cookies = useCookies(),
+  router = useRouter()
 
 async function tryLogin() {
-  if (token.value.length === 0) {
-    return console.log('请输入 Cookie')
+  if (token.value.length === 0) snackbar('请输入 Cookie')
+  else {
+    isLoading.value = true
+    cookies.set(TOKEN_KEY, token.value, {
+      secure: true,
+      // @ts-expect-error 对象字面量只能指定已知属性，并且“encode”不在类型“CookieSetOptions”中
+      encode: identity,
+    })
+    await user.tryLogin()
+    if ((await user.isLogged).value) {
+      snackbar(`欢迎 ${user.info.name}`)
+      router.back()
+    } else snackbar('登录失败')
+    isLoading.value = false
   }
-
-  isLoading.value = true
-  cookies.set(TOKEN_KEY, token.value, {
-    secure: true,
-    // @ts-expect-error 对象字面量只能指定已知属性，并且“encode”不在类型“CookieSetOptions”中
-    encode: identity,
-  })
-  await user.tryLogin()
-  if ((await user.isLogged).value) {
-    console.log('登录成功')
-  }
-  isLoading.value = false
 }
 </script>
 
